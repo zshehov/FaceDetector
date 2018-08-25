@@ -10,12 +10,11 @@ faceIdLen = 36
 
 parser = argparse.ArgumentParser(description = 'Look for the given faces in a video stored on S3 and report when they were seen. There is the notion for "and" groups whose members ought to appear simultaniously.')
 parser.add_argument('--faces', type=str, nargs='+', required=True, help='File names of images with faces to put in the collection. Should be as much as the names of faces')
-
 parser.add_argument('--names', type=str, nargs='+', required=True,  help='Names of faces to associate with corresponing images. Should be as much as the names of images')
-
 parser.add_argument('--video', type=str, nargs=1, required=True,  help='Key of the video to be analyzed, stored in the given S3 bucket')
-
 parser.add_argument('--group', type=str, nargs="*", required=False,  help='Define an "and" group', action='append')
+parser.add_argument('--configFile', type=str, nargs="?", required=False,  help='Path to the config file. Default is ./config.json')
+
 
  # ==== argument handling ====
 args = parser.parse_args()
@@ -39,8 +38,12 @@ if groups:
             print "can't have a group with an unkown name"
             exit(33)
 
+configFile = 'config.json'
+if args.configFile:
+    configFile = args.configFile
+
 try:
-    with open('config.json') as f:
+    with open(configFile) as f:
         config = json.load(f)
 except IOError:
     print 'Please create a config.json file with the following fields:\n\tCollectionId\n\tRoleArn\n\tSnsArn\n\tSqsArn?\n\tSqsUrl\n\tBucketName'
@@ -82,8 +85,8 @@ try:
             # right here we leak one faceId if we crash
             persistentFile.write(faceId)
             face_map.addFace(faceId, names[counter])
-except:
-    print "Couldn't open a persistent file"
+except IOError as io:
+    print "Couldn't open a persistent file: ", io.strerror
     exit(30)
 
 
