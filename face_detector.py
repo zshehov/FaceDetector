@@ -30,7 +30,7 @@ groups = args.group
 
 if len(faces) != len(names):
     print "not cool. images should be as much as the names for them"
-    exit
+    exit(22)
 
 if groups:
     for i in [name for group in groups for name in group]:
