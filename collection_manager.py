@@ -21,8 +21,7 @@ class CollectionManager:
         with open(imageFile, 'rb') as image:
             global resp
             resp = self.client.index_faces(CollectionId=self.collectionId,
-                                      Image={'Bytes' : image.read()},
-                                      ExternalImageId=imageFile)
+                                           Image={'Bytes' : image.read()})
 
         # return only id of the biggest face
         return resp['FaceRecords'][0]['Face']['FaceId']
@@ -53,7 +52,7 @@ class CollectionManager:
     def removeFacesFromCollection(self, faceIds):
         if len(faceIds) < 1:
             print "Nothing to delete"
-            exit()
+            return
         resp = self.client.delete_faces(CollectionId=self.collectionId,
                                    FaceIds=faceIds)
 
