@@ -46,13 +46,13 @@ try:
     with open(configFile) as f:
         config = json.load(f)
 except IOError:
-    print 'Please create a config.json file with the following fields:\n\tCollectionId\n\tRoleArn\n\tSnsArn\n\tSqsArn?\n\tSqsUrl\n\tBucketName'
+    print 'Please create a config.json file with the following fields:\n\tCollectionId\n\tRoleArn\n\tSnsArn\n\tSqsUrl\n\tBucketName'
     exit(2)
 
-required = ['CollectionId', 'RoleArn', 'SnsArn', 'SqsArn', 'SqsUrl', 'BucketName']
+required = ['CollectionId', 'RoleArn', 'SnsArn', 'SqsUrl', 'BucketName']
 
 if not all(r in config for r in required):
-    print 'config.json file is incomplete. It should have the following fields:\n\tCollectionId\n\tRoleArn\n\tSnsArn\n\tSqsArn?\n\tSqsUrl\n\tBucketName'
+    print 'config.json file is incomplete. It should have the following fields:\n\tCollectionId\n\tRoleArn\n\tSnsArn\n\tSqsUrl\n\tBucketName'
     exit(3)
 
  # ==== END OF argument handling ====
